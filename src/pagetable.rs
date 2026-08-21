@@ -193,14 +193,14 @@ pub unsafe extern "C" fn __enable_mmu_el2() {
         // caches.
         "msr mair_el2, x8",
         "msr ttbr0_el2, x11",
-        // Copy the supported PA range into TCR_EL2.IPS.
+        // Copy the supported PA range into TCR_EL2.PS.
         "mrs x8, id_aa64mmfr0_el1",
-        "bfi x10, x8, #32, #4",
+        "bfi x10, x8, #16, #3",
         "msr tcr_el2, x10",
         // Ensure everything before this point has completed, then invalidate any
         // potentially stale local TLB entries before they start being used.
         "isb",
-        "tlbi vmalle1",
+        "tlbi alle2",
         "ic iallu",
         "dsb nsh",
         "isb",
@@ -231,14 +231,14 @@ pub unsafe extern "C" fn __enable_mmu_el3() {
         // caches.
         "msr mair_el3, x8",
         "msr ttbr0_el3, x11",
-        // Copy the supported PA range into TCR_EL3.IPS.
+        // Copy the supported PA range into TCR_EL3.PS.
         "mrs x8, id_aa64mmfr0_el1",
-        "bfi x10, x8, #32, #4",
+        "bfi x10, x8, #16, #3",
         "msr tcr_el3, x10",
         // Ensure everything before this point has completed, then invalidate any
         // potentially stale local TLB entries before they start being used.
         "isb",
-        "tlbi vmalle1",
+        "tlbi alle3",
         "ic iallu",
         "dsb nsh",
         "isb",
